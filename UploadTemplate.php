@@ -16,6 +16,7 @@
 //PHP LAND
 // Handle file upload
 $message = "";
+$dataRows = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
     if (isset($_FILES['csv_file']) && $_FILES['csv_file']['error'] === UPLOAD_ERR_OK)
@@ -35,7 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             //try to open and read the file (basic check)
             if (($handle = fopen($fileTmpPath, "r")) !== false)
             {
-                $row = fgetcsv($handle, 1000, ",", '"', "\\");
+                while (($row = fgetcsv($handle, 1000, ",", '"', "\\")) !== false) {
+                    $dataRows[] = $row;
+                }
                 fclose($handle);
                 $message = "<div class='alert alert-success'>CSV uploaded and read successfully!</div>";
             }
@@ -59,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 <!-- HTML - for the buttons -->
 <!-- container is a Bootstrap class that adds padding/margins. mt-5 = margin-top: 5 units. -->
 <div class="container mt-5">
+
     <h2>Upload CSV File</h2>
     <p class="mb-3">Choose a CSV file to upload and process.</p>
 
@@ -71,6 +75,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         </div>
         <button type="submit" class="btn btn-primary">Upload</button>
     </form>
+
+
+    <?php if (!empty($dataRows)): ?>
+        <h3 class="mt-5">CSV Contents</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mt-3">
+                <thead class="table-dark">
+                <tr>
+                    <?php foreach ($dataRows[0] as $header): ?>
+                        <th><?= htmlspecialchars($header) ?></th>
+                    <?php endforeach; ?>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach (array_slice($dataRows, 1) as $row): ?>
+                    <tr>
+                        <?php foreach ($row as $cell): ?>
+                            <td><?= htmlspecialchars($cell) ?></td>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
+
+
+
+
+
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
