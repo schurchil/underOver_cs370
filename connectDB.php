@@ -1,13 +1,13 @@
 <?php
-$host = "localhost";
-$username = "root@localhost";
+$host = "127.0.0.1";
+$username = "root";
 $password = "Stephanie";
 $database = "bankingproject";
 
 $conn = mysqli_connect($host, $username, $password, $database);
 
-if (mysqli_connect_errno()) {
-    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+if (!$conn) {
+    echo "Connection failed: " . mysqli_connect_error();
     exit();
 }
 ?>

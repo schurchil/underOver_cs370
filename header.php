@@ -40,9 +40,9 @@
                         Actions
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="UploadTemplate.php">Upload CSVs</a></li>
-                        <li><a class="dropdown-item" href="view_accounts.php">View Accounts</a></li>
-                        <li><a class="dropdown-item" href="view_transactions.php">View Transactions</a></li>
+                        <li><a class="dropdown-item" href="uploadAcct.php">Upload Account CSVs</a></li>
+                        <li><a class="dropdown-item" href="uploadLoan.php">Upload Loan CSVs</a></li>
+                        <li><a class="dropdown-item" href="uploadTransact.php">Upload Transactions CSVs</a></li>
                     </ul>
                 </li>
             </ul>
