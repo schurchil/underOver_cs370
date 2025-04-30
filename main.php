@@ -1,38 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="Background.css">
+    <title>Bank Employee Portal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/sandstone/bootstrap.min.css">
+    <!--custom style to add visual flair to stuff -->
+    <style>
+        .flair {
+            color: #325d88;
+            font-weight: bold;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
 
 <?php include_once("header.php"); ?>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- The "missing locally stored library" is ok - it just advises against using CDNs, but should be
-just fine for development cases: if we want to have offline support or avoid dependency on external
-networks we would put the bootswatch/bootstrap stuff directly in our project-->
-<html lang="en">
 
-<header>
-    <h1 style="font-size:120px;" class="text-right mb-3"  style=" font-family: 'Courier New'">Online Bank</h1>
-    <p class="text-right text-muted"> Welcome Bank Administrator!</p>
+<main class="container my-5">
+    <div class="text-center mb-1">
+        <h1 class="display-4">Welcome to <span class="flair">Cisterns NearStop</span></h1>
+        <p class="lead">Brightening Our Shareholder's Financial Future with Account Holders' Money</p>
+    </div>
 
-</header>
-
-
-<body>
-        <div class="container py-5">
-            <h4 class="row justify-content-right">
-                <h4> Upload new CVS: </h4>
-                <div class="col-md-6">
-                    <div class="d-grid gap-3">
-                        <a href="uploadAcct.php" class="btn btn-primary btn-lg">Account</a>
-                        <a href="uploadLoan.php" class="btn btn-success btn-lg">Loan</a>
-                        <a href="uploadTransactions.php" class="btn btn-info btn-lg">Transactions</a>
-
-                    </div>
-                </div>
-            </div>
+    <div class="card shadow-lg mx-auto" style="max-width: 700px;">
+        <div class="card-body">
+            <h4 class="card-title text-center">Our Mission</h4>
+            <p class="card-text text-center">
+                At <span class="flair">Cisterns NearStop Bank</span>, our mission is to provide seamless, secure, and
+                intelligent banking solutions with cutting-edge technology, empowering our employees to make
+                a profit for our parent company.
+            </p>
         </div>
+    </div>
 
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <a href="uploadAcct.php" class="btn btn-primary btn-lg">Upload Account CSVs</a>
+        <a href="uploadLoan.php" class="btn btn-secondary btn-lg">Upload Loan CSVs</a>
+        <a href="uploadTransact.php" class="btn btn-success btn-lg">Upload Transactions CSVs</a>
+    </div>
+</main>
 
-
-</body>>
-
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
 
 
