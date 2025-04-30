@@ -23,26 +23,15 @@
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                <!--  report links here-->
-                <li class="nav-item">
-                    <a class="nav-link" href="report1.php">Report 1</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="report2.php">Report 2</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="report3.php">Report 3</a>
-                </li>
-
                 <!-- Dropdown for actions -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        Actions
+                        Make a report
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="uploadAcct.php">Upload Account CSVs</a></li>
-                        <li><a class="dropdown-item" href="uploadLoan.php">Upload Loan CSVs</a></li>
-                        <li><a class="dropdown-item" href="uploadTransact.php">Upload Transactions CSVs</a></li>
+                        <li><a class="dropdown-item" href="uploadAcct.php"> Account Report </a></li>
+                        <li><a class="dropdown-item" href="uploadLoan.php">Loan Reports </a></li>
+                        <li><a class="dropdown-item" href="uploadTransact.php">Employee Reports</a></li>
                     </ul>
                 </li>
             </ul>

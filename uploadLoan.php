@@ -35,15 +35,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $loan_id = intval($row[0]);     // int
                     $customer_id = intval( $row[1]);  // int
-                    $loan_type = mysqli_real_escape_string($conn, $row[2]); // enum
+                    $loan_type = ucfirst(strtolower(trim($row[2]))); // make case-insensitive
+                    $allowedLoanTypes = ['Personal', 'Auto'];
+                    if (!in_array($loan_type, $allowedLoanTypes)) {   // check against options
+                        continue;
+                    }
                     $orig_amnt= floatval($row[3]);  // decimal
                     $interest_rate = floatval($row[4]);  // decimal
-                    $status = mysqli_real_escape_string($conn, $row[5]);  // enum
+                    $status = strtoupper(trim($row[5])); // make case-insensitive
+                    $allowedStatusTypes = ['UNPAID', 'PAID'];
+                    if (!in_array($status, $allowedStatusTypes)) {   // check against options
+                        continue;
+                    }
                     $start_date = mysqli_real_escape_string($conn, $row[6]);  // date but treat like string
                     $due_date = mysqli_real_escape_string($conn, $row[7]);  // date but treat like string
 
-                    $sql = "
-                        INSERT INTO loan (LoanID, CustomerID, LoanType, OrigAmnt, InterestRate, Status, StartDate, DueDate)
+                    // USER TABLE fields
+                    $customer_name = mysqli_real_escape_string($conn, $row[8]);
+                    $customer_email = mysqli_real_escape_string($conn, $row[9]);
+
+
+
+                    $loan_sql = "
+                        INSERT INTO loan (LoanID, CustomerID, LoanType, OrigAmnt, InterestRate, Status, StartDate, DueDate )
                         VALUES ('$loan_id', '$customer_id', '$loan_type', '$orig_amnt', '$interest_rate', '$status', '$start_date', '$due_date')
                         ON DUPLICATE KEY UPDATE 
                             LoanID = '$loan_id',
@@ -54,6 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Status = '$status', 
                             StartDate = '$start_date',
                             DueDate = '$due_date';
+                    ";
+                    $user_sql ="
+                    INSERT INTO users (CustomerID, Username)
+                    
                     ";
 
                     mysqli_query($conn, $sql);
@@ -71,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="container mt-5">
-    <h2>Upload CSV File</h2>
+    <h2>Upload Loan CSV File</h2>
     <p class="mb-3">Choose a CSV file to upload and process.</p>
 
     <?php echo $message; ?>
