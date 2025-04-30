@@ -1,10 +1,8 @@
 <?php include_once("header.php"); ?>
 <?php include_once("connectDB.php");
 global $conn;
-// imports account and user
+// ACCOUNT AND USER
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $row = array_map('trim', $row);
                     $dataRows[] = $row;
 
-                    // make vars but with exceptions
+                    // ACCOUNT TABLE COLS
                     $account_id = intval($row[0]);
                     $account_name = mysqli_real_escape_string($conn, $row[1]);
                     $account_type_raw = $row[2];
@@ -53,9 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $balance = floatval($row[3]);
                     $is_sub_acc = intval($row[4]);
-                    $customer_id = intval($row[5]);
 
-                    // USER TABLE fields and splitting name
+                    // USER TABLE COLS
+                    $customer_id = intval($row[5]);
                     $customer_name = mysqli_real_escape_string($conn, $row[6]);
                     $customer_email = strtolower(mysqli_real_escape_string($conn, $row[7])); // make case-insensitive
 
@@ -63,7 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $first_name = mysqli_real_escape_string($conn, $nameParts[0]);
                     $last_name = isset($nameParts[1]) ? mysqli_real_escape_string($conn, $nameParts[1]) : '';
 
-                    // 1. Update and insert into user table
+                    // Update and insert into USER table
+                    // use dummy data to fill in the gaps, is that right???
                     $user_sql = "
                                 INSERT INTO user (CustomerID, FirstName, LastName, Email, PhoneNumber, Birthdate, SSN)
                                 VALUES ('$customer_id', '$first_name', '$last_name', '$customer_email', '000-000-0000', '2000-01-01', '000-00-0000')
@@ -74,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             ";
                     mysqli_query($conn, $user_sql);
 
-                    // 2. Update and insert into account table
+                    // Update and insert into ACCOUNT table
                     $acct_sql = "
                             INSERT INTO account (AccountID, AccountName, AccountType, Balance, IsSubAcc, CustomerID)
                             VALUES ('$account_id', '$account_name', '$account_type', '$balance', '$is_sub_acc', '$customer_id')

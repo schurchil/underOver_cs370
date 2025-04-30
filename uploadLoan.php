@@ -2,7 +2,7 @@
 <?php include_once("connectDB.php");
 global $conn;
 
-// imports loans ( LoanID, LoanType, LoanAmount, CustomerID)
+// LOAN AND USER
 ?>
 
 
@@ -35,8 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 while (($row = fgetcsv($handle, 1000, ",", '"', "\\")) !== false) {
                     $dataRows[] = $row;
 
+                    // LOAN TABLE COLS
                     $loan_id = intval($row[0]);     // int
-                    $customer_id = intval( $row[1]);  // int
+                    $customer_id = intval( $row[1]);  // int SHARED WITH USER
                     $loan_type = ucfirst(strtolower(trim($row[2]))); // make case-insensitive
                     $allowedLoanTypes = ['Personal', 'Auto'];
                     if (!in_array($loan_type, $allowedLoanTypes)) {   // check against options
@@ -58,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $dueConvert = strtotime($start_date);
                     $due_date = $dueConvert ? date('Y-m-d H:i:s', $dueConvert) : null;
 
-                    // USER TABLE fields and splitting name
+                    // USER TABLE COLS
                     $customer_name = mysqli_real_escape_string($conn, $row[8]);
                     $customer_email = mysqli_real_escape_string($conn, $row[9]);
 
@@ -89,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ON DUPLICATE KEY UPDATE 
                                     FirstName = '$customer_name',
                                      LastName = '$customer_email',
-                                     email = '$customer_email',;
+                                     email = '$customer_email';
                     ";
 
                     mysqli_query($conn, $user_sql);

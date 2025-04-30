@@ -48,17 +48,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $dept_name = mysqli_real_escape_string($conn, $row[4]);
                     $manager_name = mysqli_real_escape_string($conn, $row[5]);
 
-                    // 1. Department (INSERT or UPDATE)
+                    //Department updates and inserts ig
                     $dept_sql = "
-                        INSERT INTO department (DepartmentID, Name, Manager)
-                        VALUES ('$dept_id', '$dept_name', '$manager_name')
-                        ON DUPLICATE KEY UPDATE 
-                            Name = '$dept_name',
-                            Manager = '$manager_name';
-                    ";
+                        INSERT INTO department (DepartmentID, Address, PhoneNumber, Status, DepartmentHeadID)
+                        VALUES ('$dept_id', '123 fear st', '000-000-0000', 'active', '$employee_id')
+                        ON DUPLICATE KEY UPDATE
+                            Address = '123 Default St',
+                            PhoneNumber = '000-000-0000',  
+                            Status = 'active',
+                            DepartmentHeadID = '$employee_id';
+                        ";
                     mysqli_query($conn, $dept_sql);
 
-                    // 2. Employee (INSERT or UPDATE)
+                    // Employee updates
                     $emp_sql = "
                         INSERT INTO employee (EmployeeID, FirstName, LastName, Email, DepartmentID)
                         VALUES ('$employee_id', '$first_name', '$last_name', '$email', '$dept_id')
