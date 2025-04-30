@@ -26,13 +26,13 @@
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="uploadAcct.php">Upload Account CSV</a>
+                    <a class="nav-link" href="Account-transaction-card-report.php">View Transaction Reports</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="uploadLoan.php">Upload Loan CSV</a>
+                    <a class="nav-link" href="Account-user-loan-report.php">View User Loan Reports</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="uploadTransact.php">Upload Transactions CSV</a>
+                    <a class="nav-link" href="Employee-department-branch-report.php">View Branch Reports</a>
                 </li>
             </ul>
             <span class="navbar-text">Welcome, Employee</span>
