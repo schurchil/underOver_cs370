@@ -1,6 +1,8 @@
 <?php include_once("header.php"); ?>
 <?php include_once("connectDB.php");
 global $conn;
+
+// imports loans ( LoanID, LoanType, LoanAmount, CustomerID)
 ?>
 
 
@@ -47,12 +49,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (!in_array($status, $allowedStatusTypes)) {   // check against options
                         continue;
                     }
-                    $start_date = mysqli_real_escape_string($conn, $row[6]);  // date but treat like string
-                    $due_date = mysqli_real_escape_string($conn, $row[7]);  // date but treat like string
 
-                    // USER TABLE fields
+                    $start_date = mysqli_real_escape_string($conn, $row[6]);  // date but treat like string
+                    $startConvert = strtotime($start_date);   // needs to be converted to SQL date format to work with DB
+                    $start_date = $startConvert ? date('Y-m-d H:i:s', $startConvert) : null;
+
+                    $due_date = mysqli_real_escape_string($conn, $row[7]);  // date but treat like string
+                    $dueConvert = strtotime($start_date);
+                    $due_date = $dueConvert ? date('Y-m-d H:i:s', $dueConvert) : null;
+
+                    // USER TABLE fields and splitting name
                     $customer_name = mysqli_real_escape_string($conn, $row[8]);
                     $customer_email = mysqli_real_escape_string($conn, $row[9]);
+
+                    $nameParts = explode(' ', $customer_name, 2);
+                    $first_name = mysqli_real_escape_string($conn, $nameParts[0]);
+                    $last_name = isset($nameParts[1]) ? mysqli_real_escape_string($conn, $nameParts[1]) : '';
 
 
 
@@ -69,12 +81,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             StartDate = '$start_date',
                             DueDate = '$due_date';
                     ";
+                    mysqli_query($conn, $loan_sql);
+
                     $user_sql ="
-                    INSERT INTO users (CustomerID, Username)
-                    
+                    INSERT INTO user (CustomerID, FirstName, LastName, email, phoneNumber, birthdate, ssn)
+                    VALUES ('$customer_id', '$first_name', '$last_name', '$customer_email', '000-000-0000', '2000-01-01','0000000000')
+                    ON DUPLICATE KEY UPDATE 
+                                    FirstName = '$customer_name',
+                                     LastName = '$customer_email',
+                                     email = '$customer_email',;
                     ";
 
-                    mysqli_query($conn, $sql);
+                    mysqli_query($conn, $user_sql);
                 }
                 fclose($handle);
                 $message = "<div class='alert alert-success'>CSV uploaded and processed successfully!</div>";
