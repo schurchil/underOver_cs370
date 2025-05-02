@@ -65,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         INSERT INTO employee (EmployeeID, FirstName, LastName, Email, DepartmentID)
                         VALUES ('$employee_id', '$first_name', '$last_name', '$email', '$dept_id')
                         ON DUPLICATE KEY UPDATE
+                            EmployeeID = '$employee_id',
                             FirstName = '$first_name',
                             LastName = '$last_name',
                             Email = '$email',

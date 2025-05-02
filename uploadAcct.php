@@ -1,7 +1,7 @@
 <?php include_once("header.php"); ?>
 <?php include_once("connectDB.php");
 global $conn;
-// ACCOUNT AND USER
+// ACCOUNT AND USER AND CARD
 ?>
 
 <!DOCTYPE html>
@@ -38,34 +38,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $dataRows[] = $row;
 
                     // ACCOUNT TABLE COLS
-                    $account_id = intval($row[0]);
-                    $account_name = mysqli_real_escape_string($conn, $row[1]);
-                    $account_type_raw = $row[2];
+
+                    $account_name = mysqli_real_escape_string($conn, $row[0]);
+                    $account_type_raw = $row[1];
                     $account_type = ucfirst(strtolower($account_type_raw));
                     if ($account_type === 'Subacc') $account_type = 'SubAcc';
                     $allowedAccountTypes = ['Checking', 'Saving', 'SubAcc'];
                     if (!in_array($account_type, $allowedAccountTypes)) {
-                        // echo "<div class='alert alert-danger'>Invalid AccountType: '$account_type_raw' → '$account_type'</div>";
+                        //echo "<div class='alert alert-danger'>Invalid AccountType: '$account_type_raw' → '$account_type'</div>";
                         continue;
                     }
 
-                    $balance = floatval($row[3]);
-                    $is_sub_acc = intval($row[4]);
+                    $balance = floatval($row[2]);
+                    $is_sub_acc = intval($row[3]);
 
                     // USER TABLE COLS
-                    $customer_id = intval($row[5]);
-                    $customer_name = mysqli_real_escape_string($conn, $row[6]);
-                    $customer_email = strtolower(mysqli_real_escape_string($conn, $row[7])); // make case-insensitive
+
+                    $customer_name = mysqli_real_escape_string($conn, $row[4]);
+                    $customer_email = strtolower(mysqli_real_escape_string($conn, $row[5])); // make case-insensitive
 
                     $nameParts = explode(' ', $customer_name, 2);
                     $first_name = mysqli_real_escape_string($conn, $nameParts[0]);
                     $last_name = isset($nameParts[1]) ? mysqli_real_escape_string($conn, $nameParts[1]) : '';
 
+                    $card_type_raw = mysqli_real_escape_string($conn, $row[6]);
+                    echo $card_type_raw;
+                    $card_type = ucfirst(strtolower($card_type_raw));
+                    $allowedCardTypes = ['Credit', 'Debit'];
+                    if (!in_array($card_type, $allowedCardTypes)) {
+                        //echo "<div class='alert alert-danger'>Invalid cardType: '$card_type_raw' → '$card_type'</div>";
+                        continue;
+                    }
+                    $expirationDate = mysqli_real_escape_string($conn, $row[7]);
+                    $status = mysqli_real_escape_string($conn, $row[8]);
+
                     // Update and insert into USER table
                     // use dummy data to fill in the gaps, is that right???
                     $user_sql = "
-                                INSERT INTO user (CustomerID, FirstName, LastName, Email, PhoneNumber, Birthdate, SSN)
-                                VALUES ('$customer_id', '$first_name', '$last_name', '$customer_email', '000-000-0000', '2000-01-01', '000-00-0000')
+                                INSERT INTO user ( FirstName, LastName, Email, PhoneNumber, Birthdate, SSN)
+                                VALUES (, '$first_name', '$last_name', '$customer_email', '000-000-0000', '2000-01-01', '000-00-0000')
                                 ON DUPLICATE KEY UPDATE
                                     FirstName = '$first_name',
                                     LastName = '$last_name',
@@ -75,16 +86,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     // Update and insert into ACCOUNT table
                     $acct_sql = "
-                            INSERT INTO account (AccountID, AccountName, AccountType, Balance, IsSubAcc, CustomerID)
-                            VALUES ('$account_id', '$account_name', '$account_type', '$balance', '$is_sub_acc', '$customer_id')
+                            INSERT INTO account ( AccountName, AccountType, Balance, IsSubAcc)
+                            VALUES (, '$account_name', '$account_type', '$balance', '$is_sub_acc')
                             ON DUPLICATE KEY UPDATE 
                                 AccountName = '$account_name',
                                 AccountType = '$account_type',
                                 Balance = '$balance',
                                 IsSubAcc = '$is_sub_acc',
-                                CustomerID = '$customer_id';
                         ";
                     mysqli_query($conn, $acct_sql);
+
+                    // update and insert into CARD table
+                    $card_sql = "
+                        INSERT INTO card( CardType, ExpirationDate, Status)
+                        VALUES ('$card_type', '$expirationDate','$status')
+                        ON DUPLICATE KEY UPDATE
+                                         CardType = '$card_type',
+                                         ExpirationDate = '$expirationDate',
+                                         Status = '$status';
+                    ";
+                    mysqli_query($conn, $card_sql);
                 }
 
                 fclose($handle);

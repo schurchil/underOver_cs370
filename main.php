@@ -37,7 +37,7 @@
     <div class="d-flex justify-content-center gap-3 mt-4">
         <a href="uploadAcct.php" class="btn btn-primary btn-lg">Upload Account CSVs</a>
         <a href="uploadLoan.php" class="btn btn-secondary btn-lg">Upload Loan CSVs</a>
-        <a href="uploadTransact.php" class="btn btn-success btn-lg">Upload Transactions CSVs</a>
+        <a href="uploadTransact.php" class="btn btn-success btn-lg">Upload Employee CSVs</a>
     </div>
 </main>
 

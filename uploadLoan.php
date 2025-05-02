@@ -88,8 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     INSERT INTO user (CustomerID, FirstName, LastName, email, phoneNumber, birthdate, ssn)
                     VALUES ('$customer_id', '$first_name', '$last_name', '$customer_email', '000-000-0000', '2000-01-01','0000000000')
                     ON DUPLICATE KEY UPDATE 
-                                    FirstName = '$customer_name',
-                                     LastName = '$customer_email',
+                                    FirstName = '$first_name',
+                                     LastName = '$last_name',
                                      email = '$customer_email';
                     ";
 
